@@ -9,6 +9,7 @@ from keras.layers import Dense, Activation, Flatten
 from keras.layers import LSTM
 from keras.layers import Conv1D
 from keras.layers import MaxPooling1D
+from keras.datasets import imdb
 
 from keras.optimizers import RMSprop
 from keras.utils.data_utils import get_file
@@ -50,12 +51,12 @@ def build_model(maxlen, chars):
     # build the model: an MLP with 1 hidden layer
     print('Build model...')
     model = Sequential()
-    # model.add(Conv1D(filters=(2), kernel_size=7, strides=1, input_shape=(40,57)))
+    # model.add(Conv1D(filters=(5,3,4), kernel_size=(7,3,5), strides=1, input_shape=(maxlen, len(chars))))
     # model.add(MaxPooling1D(pool_size=3, strides=1, padding='valid'))
-    # model.add(Conv1D(filters=(2), kernel_size=7, strides=1, input_shape=(40,57)))
+    # model.add(Conv1D(filters=(3), kernel_size=7, strides=1, input_shape=(maxlen, len(chars))))
     # model.add(MaxPooling1D(pool_size=3, strides=1, padding='valid'))
-    # model.add(Conv1D(filters=(2), kernel_size=3, strides=1, input_shape=(40,57)))
-    model.add(Conv1D(filters=(2), kernel_size=3, strides=1, input_shape=(maxlen, len(chars))))
+    # model.add(Conv1D(filters=(2), kernel_size=3, strides=1, input_shape=(maxlen, len(chars))))
+    model.add(Conv1D(filters=(5), kernel_size=(7), strides=1, input_shape=(maxlen, len(chars))))
     model.add(Conv1D(filters=(2), kernel_size=3, strides=1, input_shape=(maxlen, len(chars))))
     model.add(Conv1D(filters=(2), kernel_size=3, strides=1, input_shape=(maxlen, len(chars))))
     model.add(MaxPooling1D(pool_size=3, strides=1, padding='valid'))
@@ -71,6 +72,7 @@ def build_model(maxlen, chars):
 
 
     model.compile(loss='categorical_crossentropy', optimizer=optimizer)
+    print(model.summary())
 
     return model
 
@@ -124,6 +126,6 @@ if __name__ == '__main__':
         x,
         y,
         batch_size=128,
-        epochs=20,
+        epochs=50,
         callbacks=[print_callback]
     )
